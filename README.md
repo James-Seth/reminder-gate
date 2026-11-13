@@ -24,7 +24,7 @@ If Steam is already open when midnight passes, it's left alone. The new day's ch
 
 ## Screenshots
 
-| Prompt | Tray menu | Settings | History |
+| Prompt | Tray Icon | Settings | History |
 |:-:|:-:|:-:|:-:|
 | ![Prompt](screenshots/prompt.png) | ![Tray](screenshots/tray.png) | ![Settings](screenshots/settings.png) | ![History](screenshots/history.png) |
 
