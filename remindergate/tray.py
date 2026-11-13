@@ -7,35 +7,23 @@ Icon is generated at runtime with Pillow (no .ico file needed).
 
 import threading
 import logging
+import sys
+from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image
 import pystray
+from pystray._base import Icon as BaseIcon
 
 from remindergate import __app_name__
 
 log = logging.getLogger(__name__)
 
 
-def _make_icon(size: int = 64) -> Image.Image:
-    """Simple gate/lock icon — a padlock silhouette."""
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    m = size // 8  # margin
-
-    # Shackle (arc)
-    shackle_box = [m + 8, m, size - m - 8, size // 2 + 4]
-    d.arc(shackle_box, 180, 360, fill="#4a7abc", width=4)
-
-    # Body (rounded rect approximation)
-    body = [m, size // 3, size - m, size - m]
-    d.rounded_rectangle(body, radius=4, fill="#4a7abc")
-
-    # Keyhole
-    cx, cy = size // 2, int(size * 0.52)
-    d.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill="white")
-    d.polygon([(cx - 3, cy + 2), (cx + 3, cy + 2), (cx, cy + 12)], fill="white")
-
-    return img
+def _load_icon() -> Image.Image:
+    app_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
+    icon_path = app_dir / "screenshots" / "tray-icon.png"
+    with Image.open(icon_path) as icon:
+        return icon.convert("RGBA")
 
 
 class TrayIcon:
@@ -45,7 +33,7 @@ class TrayIcon:
         self._on_settings = on_settings
         self._on_history = on_history
         self._on_quit = on_quit
-        self._icon: pystray.Icon | None = None
+        self._icon: BaseIcon | None = None
 
     def start(self) -> None:
         menu = pystray.Menu(
@@ -56,7 +44,7 @@ class TrayIcon:
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("Quit", self._on_quit),
         )
-        self._icon = pystray.Icon(__app_name__, _make_icon(), __app_name__, menu)
+        self._icon = pystray.Icon(__app_name__, _load_icon(), __app_name__, menu)
         threading.Thread(target=self._icon.run, daemon=True).start()
         log.info("Tray started")
 

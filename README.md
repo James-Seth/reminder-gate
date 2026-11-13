@@ -1,4 +1,4 @@
-# reminder-gate
+<h1><img src="screenshots/logo.png" alt="Reminder Gate logo" width="64" align="middle"> reminder-gate</h1>
 
 **A small Windows app that gates Steam until you check off a daily reminder.**
 
@@ -75,7 +75,7 @@ Output: `dist\reminder-gate.exe`
 
 **Manually:** Press `Win+R`, type `shell:startup`, drop a shortcut to `reminder-gate.exe` in that folder.
 
-It doesn't matter whether Steam or reminder-gate starts first. Steam can start with Windows and update in the background; you'll only be prompted when you open the Steam window.
+It doesn't matter whether Steam or reminder-gate starts first. Steam can start with Windows and update in the background; you will only be prompted when you open the Steam window.
 
 ---
 
